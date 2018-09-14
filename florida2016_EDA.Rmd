@@ -1,30 +1,52 @@
 ---
-title: "florida2016_EDA"
+title: "Florida 2016 Presidential Campaign Contributions (as of October 2016)"
 author: "Marty VanHoof"
-date: '2018-09-06'
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+This report is an exploratory data analysis of campaign finance data from the Florida 2016 presidential primary elections.  A description of the different columns in the dataset is [here](https://www.dropbox.com/s/2fc15css7bp0jgq/CONTRIBUTOR_FORMAT.txt?dl=0).  I originally completed this analysis about a month before the November 2016 election.  If I was doing the analysis retrospectively, then it would probably be different.  Also, the analysis has a stream-of-consciousness style to it that is very exploratory in nature and this style doesn't often appear in polished reports.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r packages, message=FALSE, warning=FALSE}
+# load required packages
+library(ggplot2)
+library(dplyr)
+library(knitr)
+library(tidyr)
+library(gender)
+library(gridExtra)
 ```
 
-## Including Plots
+## 1. Initial Data Wrangling
 
-You can also embed plots, for example:
+In my local folder I renamed the dataset to `'FL_contributions.csv'`.  There is a problem with loading the dataset directly, since the row names are not unique.  To get around this, set `'row.names = Null'`, which reads in the first column of the dataset as a column of data rather than row names.  This will assign the first column the column name `'row.names'` and shift all the other column names over by one, so that now the column names are no longer associcated with the correct columns.  We can fix this by first moving all the columns over one place (assigning `'x'` as a name for the last column), and then finally removing this last column.  
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+Also, there are a bunch of columns in the dataset that are not needed:
+
+`'cand_id', 'memo_cd', 'form_tp', 'file_num', 'tran_id', 'contbr_st'`. 
+
+I'm just going to remove these columns.
+
+```{r}
+# load the data
+fl = read.csv('FL_contributions.csv', row.names = NULL)
+colnames(fl) = c(colnames(fl)[-1], "x")
+fl$x = NULL
+
+# remove the columns that we don't need
+fl = subset(fl, select = -c(cand_id, memo_cd, form_tp, file_num, tran_id, contbr_st))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+
+
+
+
