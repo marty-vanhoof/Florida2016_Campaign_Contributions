@@ -3,15 +3,20 @@ title: "Florida 2016 Presidential Campaign Contributions (as of October 2016)"
 author: "Marty VanHoof"
 output:
   html_document:
-    toc: true
+    #code_folding: hide
+    toc: yes
     toc_depth: 2
-    code_folding: hide
+  pdf_document:
+    toc: yes
+    toc_depth: 2
 ---
 
 This report is an exploratory data analysis of campaign finance data from the Florida 2016 presidential primary elections.  A description of the different columns in the dataset is [here](https://www.dropbox.com/s/2fc15css7bp0jgq/CONTRIBUTOR_FORMAT.txt?dl=0).  I originally completed this analysis about a month before the November 2016 election.  If I was doing the analysis retrospectively, then it would probably be different.  Also, the analysis has a stream-of-consciousness style to it that is very exploratory in nature and this style doesn't often appear in polished reports.
 
 ```{r packages, message=FALSE, warning=FALSE}
 # load required packages
+#install.packages("genderdata", repos = "http://packages.ropensci.org", type = #"source")
+
 library(ggplot2)
 library(dplyr)
 library(knitr)
@@ -40,11 +45,32 @@ fl$x = NULL
 fl = subset(fl, select = -c(cand_id, memo_cd, form_tp, file_num, tran_id, contbr_st))
 ```
 
+I want to create 2 more categorical variables for my analysis:  Gender and political party affiliation.  To create the variable for gender, we first split the ` contbr_nm` column into 2 new columns `FirstName` and `LastName`:
 
+```{r}
+# Create a copy of the 'fl' dataframe
+fl.1 = fl
 
+# create a new column where the names are character types rather than factors
+fl.1$contbr_nm.new = as.character(fl.1$contbr_nm)
 
+# Extract the lastname and firstname from the 'contbr_nm.new' column.  
+# Create 2 new columns in the dataframe:  'LastName', 'FirstName'
+fl.1 = extract(fl.1, contbr_nm.new, c('LastName', 'FirstName'), '(.*),\\s*(\\S*)\\s*.*', fill = 'left', perl = TRUE)
+```
 
+We will now use the `gender()` function in R to predict gender based on a person's firstname.
 
+```{r}
+# Use gender() function to predict gender, then merge the columns with 'fl.1'
+names_gender = gender(unique(fl.1$FirstName), method = "ssa" )
+names_gender = names_gender[ , c('name', 'gender')]
+fl.1 = merge(fl.1, names_gender, by.x = 'FirstName', by.y = 'name', all.x = TRUE)
+
+# Drop 'FirstName' and 'LastName' columns from the dataset and make 'gender' into a factor variable
+fl.1 = subset(fl.1, select = -c(FirstName, LastName))
+fl.1$gender = factor(fl.1$gender)
+```
 
 
 
