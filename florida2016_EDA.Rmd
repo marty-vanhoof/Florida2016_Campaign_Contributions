@@ -72,5 +72,49 @@ fl.1 = subset(fl.1, select = -c(FirstName, LastName))
 fl.1$gender = factor(fl.1$gender)
 ```
 
+Note that there are 9605 names where the `gender()` function returned NA:
+
+```{r}
+nrow(subset(fl.1, is.na(gender)))
+```
+
+So when we do any analysis using gender, we'll have to remember to exclude those rows from the dataset.  
+
+Now let's create a variable for political party affiliation of the campaign contributor.  We will make the assumption that the contributor is affiliated with the same party as the candidate they donated to.
+
+```{r}
+# Create a variable for political party
+democrat = c('Sanders, Bernard', 'Lessig, Lawrence', 'Clinton, Hillary Rodham',
+              "O'Malley, Martin Joseph", 'Webb, James Henry Jr.')
+libertarian = 'Johnson, Gary'
+green = 'Stein, Jill'
+other = 'McMullin, Evan'
+all_cands = unique(fl.1$cand_nm)
+republican = all_cands[ !(all_cands %in% c(democrat, libertarian, green, other))]
+
+fl.1$party = with(fl.1, ifelse(cand_nm %in% democrat, 'Democrat',
+                        ifelse(cand_nm %in% libertarian, 'Libertarian',
+                        ifelse(cand_nm %in% green, 'Green',
+                        ifelse(cand_nm %in% other, 'Other', 'Republican')))))
+
+# Make 'party' into a factor variable
+fl.1$party = factor(fl.1$party)
+```
+
+The column `contb_receipt_dt` is currently a factor variable.  Let's convert the column to date format so that we can eventually look at time series plots.
+
+```{r}
+fl.1$contb_receipt_dt = as.Date(fl.1$contb_receipt_dt, "%d-%b-%y")
+```
+
+Now we are ready to start the exploratory data analysis.
+
+
+
+
+
+
+
+
 
 
