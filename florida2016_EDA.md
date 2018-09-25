@@ -12,7 +12,7 @@ output:
     toc_depth: 2
 ---
 
-This report is an exploratory data analysis of campaign finance data from the Florida 2016 presidential primary elections.  A description of the different columns in the dataset is [here](https://www.dropbox.com/s/2fc15css7bp0jgq/CONTRIBUTOR_FORMAT.txt?dl=0).  I originally completed this analysis about a month before the November 2016 election.  If I was doing the analysis retrospectively, then it would probably be different.  Also, the analysis has a stream-of-consciousness style to it that is very exploratory in nature and this style doesn't often appear in polished reports.
+This report is an exploratory data analysis of campaign finance data from the Florida 2016 presidential primary elections.  A description of the different columns in the dataset is [here](https://www.dropbox.com/s/2fc15css7bp0jgq/CONTRIBUTOR_FORMAT.txt?dl=0).  I originally completed this analysis about a month before the November 2016 election. If I was doing the analysis retrospectively, then it would probably be different.  
 
 
 ```r
@@ -187,3 +187,18 @@ The Democrat Party has the highest number of contributions with 211105, and the 
 ```
 
 Now we'll start some data visualization and look at the distribution of contribution amounts, omitting the negative contributions.
+
+![](florida2016_EDA_files/figure-html/Univariate_Plots_4-1.png)<!-- -->
+
+As I suspected, the data is highly skewed.  The vast majority of contributions are in the smaller range, but it's really hard to see from the graph.  Let's find the 99th percentile of all contribution amounts and then limit the x-axis at this value. The 99th percentile is
+
+
+```
+##  99% 
+## 2700
+```
+
+Now let's look at the histogram again, but with the contribution amounts limited at 2700.  We will also add some more breaks on the x and y axes in order to see the amounts better, and apply a square root transformation to the y-axis, which gives us a better view of the values in the tail of the distribution.
+
+![](florida2016_EDA_files/figure-html/Univariate_Plots_6-1.png)<!-- -->
+

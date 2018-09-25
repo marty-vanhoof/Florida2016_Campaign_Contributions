@@ -4,6 +4,7 @@ author: "Marty VanHoof"
 output:
   html_document:
     #code_folding: hide
+    keep_md: true
     toc: yes
     toc_depth: 2
   pdf_document:
@@ -11,7 +12,7 @@ output:
     toc_depth: 2
 ---
 
-This report is an exploratory data analysis of campaign finance data from the Florida 2016 presidential primary elections.  A description of the different columns in the dataset is [here](https://www.dropbox.com/s/2fc15css7bp0jgq/CONTRIBUTOR_FORMAT.txt?dl=0).  I originally completed this analysis about a month before the November 2016 election.  If I was doing the analysis retrospectively, then it would probably be different.  Also, the analysis has a stream-of-consciousness style to it that is very exploratory in nature and this style doesn't often appear in polished reports.
+This report is an exploratory data analysis of campaign finance data from the Florida 2016 presidential primary elections.  A description of the different columns in the dataset is [here](https://www.dropbox.com/s/2fc15css7bp0jgq/CONTRIBUTOR_FORMAT.txt?dl=0).  I originally completed this analysis about a month before the November 2016 election. If I was doing the analysis retrospectively, then it would probably be different.  
 
 ```{r packages, message=FALSE, warning=FALSE}
 ### load required packages
@@ -138,3 +139,36 @@ table(fl.1$party)
 ```
 
 Now we'll start some data visualization and look at the distribution of contribution amounts, omitting the negative contributions.
+
+```{r echo=FALSE, Univariate_Plots_4}
+pos_contb = subset(fl.1, contb_receipt_amt > 0)
+ggplot(aes(x = contb_receipt_amt), data = pos_contb) +
+  geom_histogram(binwidth = 50) 
+```
+
+As I suspected, the data is highly skewed.  The vast majority of contributions are in the smaller range, but it's really hard to see from the graph.  Let's find the 99th percentile of all contribution amounts and then limit the x-axis at this value. The 99th percentile is
+
+```{r echo=FALSE, Univariate_Plots_5}
+quantile(pos_contb$contb_receipt_amt, 0.99)
+```
+
+Now let's look at the histogram again, but with the contribution amounts limited at 2700.  We will also add some more breaks on the x and y axes in order to see the amounts better, and apply a square root transformation to the y-axis, which gives us a better view of the values in the tail of the distribution.
+
+```{r echo=FALSE, warning = FALSE, Univariate_Plots_6}
+# Omit the top 1% of contribution amounts and apply the sqrt function to the y-axis
+ggplot(aes(x = contb_receipt_amt), data = pos_contb) +
+  geom_histogram(binwidth = 50) +
+  scale_x_continuous(limits = c(0, 2700), breaks = seq(0, 2700, 200)) +
+  scale_y_sqrt(breaks = c(5000,10000,25000,50000,75000,100000)) 
+```
+
+This is much better.  We can now see that most of the contributions are $100 or less with some spikes in contributions around $300, $500, $1000, $2000, $2500.  I assume these are people making larger contributions who decided on certain nice rounded numbers to contribute.
+
+We can plot the x values on a log10 scale in order to see the smaller contribution amounts better.  It appears that the log-transformed plot is somewhat symmetric, maybe approximately normal.
+
+```{r echo=FALSE, warning = FALSE, Univariate_Plots_7}
+ggplot(aes(x = contb_receipt_amt), data = pos_contb) +
+  geom_histogram(binwidth = 0.175) +
+  scale_x_log10(breaks = c(10,25,100,500,2500,10000))
+```
+
