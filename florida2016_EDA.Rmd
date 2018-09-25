@@ -211,10 +211,80 @@ ggplot(data = pos_contb, aes(x = contb_receipt_dt, y = ..count..)) +
 The election year in question is 2016, and this plot shows that the number of contributions increase steadily as we get closer to the election.  There are also some spikes and dips in the plot.  I want to dig deeper into 2016 and see how the contributions change from month-to-month.
 
 ```{r echo=FALSE, warning = FALSE, Univariate_Plots_11.5}
-lims <- as.Date(c('2016-01-01', '2016-11-01'))
+lims = as.Date(c('2016-01-01', '2016-11-01'))
 ggplot(data = pos_contb, aes(x = contb_receipt_dt, y = ..count..)) +
   geom_density() +
   scale_x_date(limits = lims, date_breaks = "2 months")
 ```
 
 We can see that the number of contributions increases until around March 1 and then starts to decrease again and fluctuate until about mid-May (March 1 2016 was actually Super Tuesday, and I don't know if this is related to the drop-off in contributions or not).  The contributions start to increase sharply again until July 10 or so, and then drop-off and fluctuate a bit after that.  Incidentally, July 12 was the date when Bernie Sanders endorsed Hillary Clinton (again, we don't know if these events are related or not). 
+
+Now let's look at the number of contributions by political party.  
+
+```{r echo=FALSE, warning = FALSE, Univariate_Plots_12}
+# Create a table of mean, median, total contributions, and counts grouped by party.
+# We will use the other statistics in this table in the bivariate plots section
+contb_by_party = pos_contb %>% group_by(party) %>%
+  summarise(mean_contb_amt = mean(contb_receipt_amt),
+            median_contb_amt = median(contb_receipt_amt),
+            total_contb_amt = sum(contb_receipt_amt),
+            num_contb = n()) 
+
+# Bar graph for number of contributions by party
+ggplot(data = contb_by_party, aes(x = party, y = num_contb)) +
+  geom_bar(stat = "identity")
+
+select(contb_by_party, party, num_contb)
+```
+
+This graph clearly shows that the number of individual contributions to the 2 major parties (Democrat, Republican) dwarf the other contributions by far.  Also, there are many more individual contributions for Democrats (209044) than Republicans (122125).  We will see later though that the total contribution amount (sum of all contributions) is greater for Republicans than Democrats. 
+
+Let's dig deeper into the contributions and look at the contributions by candidate. Here are the top 10 candidates by number of individual contributions.
+
+```{r echo=FALSE, warning = FALSE, message = FALSE, Univariate_Plots_13}
+# Create a table of mean, total contributions, and counts grouped by candidate
+contb_by_cand = pos_contb %>% group_by(cand_nm) %>%
+  summarise(mean_contb_amt = mean(contb_receipt_amt),
+            total_contb_amt = sum(contb_receipt_amt),
+            num_contb = n()) %>%
+  arrange(desc(num_contb))
+
+# Bar graph of top 10 num_contb by candidate
+ggplot(data = contb_by_cand %>% top_n(10), aes(x = reorder(cand_nm, num_contb),
+                                               y = num_contb)) +
+  geom_bar(stat = 'identity') +
+  coord_flip() +
+  xlab('cand_nm') +
+  scale_y_continuous(limits = c(0,130000), breaks = seq(0, 125000, 25000))
+
+select(contb_by_cand %>% top_n(10), cand_nm, num_contb)
+```
+
+So we can see that Hillary Clinton has the most individual contributions (126869), followed by Bernie Sanders (81954), Donald Trump (46669), Ted Cruz (28242), etc.
+
+Now let's use a similar bar graph to examine the top 10 occupations by number of contributions.
+
+```{r echo=FALSE, warning = FALSE, message = FALSE, Univariate_Plots_14}
+# Create a table of mean, total contributions, and counts grouped by occupation
+contb_by_occ = pos_contb %>% group_by(contbr_occupation) %>%
+  summarise(mean_contb_amt = mean(contb_receipt_amt),
+            median_contb_amt = median(contb_receipt_amt),
+            total_contb_amt = sum(contb_receipt_amt),
+            num_contb = n()) %>%
+  arrange(desc(num_contb))
+  
+contb_by_occ =
+filter(contb_by_occ, contbr_occupation != 'INFORMATION REQUESTED',
+         contbr_occupation != 'INFORMATION REQUESTED PER BEST EFFORTS')
+
+# Bar graph of top 10 number of contributions by occupation
+ggplot(data = contb_by_occ %>% top_n(10),
+       aes(x = reorder(contbr_occupation, num_contb), y = num_contb)) +
+  geom_bar(stat = 'identity') +
+  coord_flip() +
+  xlab('contbr_occupation')
+
+select(contb_by_occ %>% top_n(10), contbr_occupation, num_contb)
+```
+
+It's interesting to note that retired people make by far the most individual contributions (103328), followed by people who are not employed (31766), then attornies (8055), homemakers (4653), physicians (4647), etc.

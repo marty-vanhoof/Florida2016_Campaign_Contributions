@@ -242,3 +242,64 @@ The election year in question is 2016, and this plot shows that the number of co
 ![](florida2016_EDA_files/figure-html/Univariate_Plots_11.5-1.png)<!-- -->
 
 We can see that the number of contributions increases until around March 1 and then starts to decrease again and fluctuate until about mid-May (March 1 2016 was actually Super Tuesday, and I don't know if this is related to the drop-off in contributions or not).  The contributions start to increase sharply again until July 10 or so, and then drop-off and fluctuate a bit after that.  Incidentally, July 12 was the date when Bernie Sanders endorsed Hillary Clinton (again, we don't know if these events are related or not). 
+
+Now let's look at the number of contributions by political party.  
+
+![](florida2016_EDA_files/figure-html/Univariate_Plots_12-1.png)<!-- -->
+
+```
+## # A tibble: 5 x 2
+##   party       num_contb
+##   <fct>           <int>
+## 1 Democrat       209044
+## 2 Green             286
+## 3 Libertarian       654
+## 4 Other              36
+## 5 Republican     122125
+```
+
+This graph clearly shows that the number of individual contributions to the 2 major parties (Democrat, Republican) dwarf the other contributions by far.  Also, there are many more individual contributions for Democrats (209044) than Republicans (122125).  We will see later though that the total contribution amount (sum of all contributions) is greater for Republicans than Democrats. 
+
+Let's dig deeper into the contributions and look at the contributions by candidate. Here are the top 10 candidates by number of individual contributions.
+
+![](florida2016_EDA_files/figure-html/Univariate_Plots_13-1.png)<!-- -->
+
+```
+## # A tibble: 10 x 2
+##    cand_nm                   num_contb
+##    <fct>                         <int>
+##  1 Clinton, Hillary Rodham      126869
+##  2 Sanders, Bernard              81954
+##  3 Trump, Donald J.              46669
+##  4 Cruz, Rafael Edward 'Ted'     28242
+##  5 Rubio, Marco                  18957
+##  6 Carson, Benjamin S.           15824
+##  7 Bush, Jeb                      5725
+##  8 Fiorina, Carly                 2038
+##  9 Paul, Rand                     2011
+## 10 Kasich, John R.                1326
+```
+
+So we can see that Hillary Clinton has the most individual contributions (126869), followed by Bernie Sanders (81954), Donald Trump (46669), Ted Cruz (28242), etc.
+
+Now let's use a similar bar graph to examine the top 10 occupations by number of contributions.
+
+![](florida2016_EDA_files/figure-html/Univariate_Plots_14-1.png)<!-- -->
+
+```
+## # A tibble: 10 x 2
+##    contbr_occupation num_contb
+##    <fct>                 <int>
+##  1 RETIRED              103328
+##  2 NOT EMPLOYED          31766
+##  3 ATTORNEY               8055
+##  4 HOMEMAKER              4653
+##  5 PHYSICIAN              4647
+##  6 TEACHER                4626
+##  7 CONSULTANT             3200
+##  8 SALES                  3108
+##  9 PROFESSOR              3059
+## 10 ENGINEER               2678
+```
+
+It's interesting to note that retired people make by far the most individual contributions (103328), followed by people who are not employed (31766), then attornies (8055), homemakers (4653), physicians (4647), etc.
