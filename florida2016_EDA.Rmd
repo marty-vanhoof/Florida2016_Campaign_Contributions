@@ -193,3 +193,28 @@ ggplot(aes(x = contb_receipt_amt), data = subset(pos_contb, !is.na(gender))) +
   scale_x_log10(breaks = c(10,25,100,500,2500,10000)) +
   facet_wrap(~gender)
 ```
+
+Okay, so it appears that the distributions are quite similar across gender, although if we summarize the contribution amounts by gender, we can see that males contribute a bit more on average.
+
+```{r echo=FALSE, warning = FALSE, Univariate_Plots_10}
+by(pos_contb$contb_receipt_amt, pos_contb$gender, summary)
+```
+
+How do the number of contributions change with respect to date? To visualize this we can look at a density plot of the variable `contb_receipt_dt` with the counts on the y-axis.
+
+```{r echo=FALSE, warning = FALSE, Univariate_Plots_11}
+# Density plot for contb_receipt date
+ggplot(data = pos_contb, aes(x = contb_receipt_dt, y = ..count..)) +
+  geom_density()
+```
+
+The election year in question is 2016, and this plot shows that the number of contributions increase steadily as we get closer to the election.  There are also some spikes and dips in the plot.  I want to dig deeper into 2016 and see how the contributions change from month-to-month.
+
+```{r echo=FALSE, warning = FALSE, Univariate_Plots_11.5}
+lims <- as.Date(c('2016-01-01', '2016-11-01'))
+ggplot(data = pos_contb, aes(x = contb_receipt_dt, y = ..count..)) +
+  geom_density() +
+  scale_x_date(limits = lims, date_breaks = "2 months")
+```
+
+We can see that the number of contributions increases until around March 1 and then starts to decrease again and fluctuate until about mid-May (March 1 2016 was actually Super Tuesday, and I don't know if this is related to the drop-off in contributions or not).  The contributions start to increase sharply again until July 10 or so, and then drop-off and fluctuate a bit after that.  Incidentally, July 12 was the date when Bernie Sanders endorsed Hillary Clinton (again, we don't know if these events are related or not). 

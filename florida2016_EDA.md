@@ -219,3 +219,26 @@ From this plot we can easily see that a large chunk of the contributions are $10
 I'm curious how the above distributions look when separated by gender. Are there any differences in the distributions for male versus female? 
 
 ![](florida2016_EDA_files/figure-html/Univariate_Plots_9-1.png)<!-- -->![](florida2016_EDA_files/figure-html/Univariate_Plots_9-2.png)<!-- -->
+
+Okay, so it appears that the distributions are quite similar across gender, although if we summarize the contribution amounts by gender, we can see that males contribute a bit more on average.
+
+
+```
+## pos_contb$gender: female
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+##     0.21    15.00    27.00   128.78    75.00 10800.00 
+## -------------------------------------------------------- 
+## pos_contb$gender: male
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+##     0.15    20.00    40.00   190.35   100.00 20000.00
+```
+
+How do the number of contributions change with respect to date? To visualize this we can look at a density plot of the variable `contb_receipt_dt` with the counts on the y-axis.
+
+![](florida2016_EDA_files/figure-html/Univariate_Plots_11-1.png)<!-- -->
+
+The election year in question is 2016, and this plot shows that the number of contributions increase steadily as we get closer to the election.  There are also some spikes and dips in the plot.  I want to dig deeper into 2016 and see how the contributions change from month-to-month.
+
+![](florida2016_EDA_files/figure-html/Univariate_Plots_11.5-1.png)<!-- -->
+
+We can see that the number of contributions increases until around March 1 and then starts to decrease again and fluctuate until about mid-May (March 1 2016 was actually Super Tuesday, and I don't know if this is related to the drop-off in contributions or not).  The contributions start to increase sharply again until July 10 or so, and then drop-off and fluctuate a bit after that.  Incidentally, July 12 was the date when Bernie Sanders endorsed Hillary Clinton (again, we don't know if these events are related or not). 
