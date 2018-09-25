@@ -202,3 +202,20 @@ Now let's look at the histogram again, but with the contribution amounts limited
 
 ![](florida2016_EDA_files/figure-html/Univariate_Plots_6-1.png)<!-- -->
 
+This is much better.  We can now see that most of the contributions are $100 or less with some spikes in contributions around $300, $500, $1000, $2000, $2500.  I assume these are people making larger contributions who decided on certain nice rounded numbers to contribute.
+
+We can plot the x values on a log10 scale in order to see the smaller contribution amounts better.  It appears that the log-transformed plot is somewhat symmetric, maybe approximately normal.
+
+![](florida2016_EDA_files/figure-html/Univariate_Plots_7-1.png)<!-- -->
+
+From this plot we can easily see that a large chunk of the contributions are $100 or less, and that the mode is $25.  In fact, $100 is the 75th percentile of individual contribution amounts, so 75% of the contributions are $100 or less.
+
+
+```
+## 75% 
+## 100
+```
+
+I'm curious how the above distributions look when separated by gender. Are there any differences in the distributions for male versus female? 
+
+![](florida2016_EDA_files/figure-html/Univariate_Plots_9-1.png)<!-- -->![](florida2016_EDA_files/figure-html/Univariate_Plots_9-2.png)<!-- -->

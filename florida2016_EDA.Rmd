@@ -172,3 +172,24 @@ ggplot(aes(x = contb_receipt_amt), data = pos_contb) +
   scale_x_log10(breaks = c(10,25,100,500,2500,10000))
 ```
 
+From this plot we can easily see that a large chunk of the contributions are $100 or less, and that the mode is $25.  In fact, $100 is the 75th percentile of individual contribution amounts, so 75% of the contributions are $100 or less.
+
+```{r echo=FALSE, warning = FALSE, Univariate_Plots_8}
+quantile(pos_contb$contb_receipt_amt, 0.75)
+```
+
+I'm curious how the above distributions look when separated by gender. Are there any differences in the distributions for male versus female? 
+
+```{r echo=FALSE, warning = FALSE, Univariate_Plots_9}
+# Add a layer to the above plots to facet by gender
+ggplot(aes(x = contb_receipt_amt), data = subset(pos_contb, !is.na(gender))) +
+  geom_histogram(binwidth = 50) +
+  scale_x_continuous(limits = c(0, 2700)) +
+  scale_y_sqrt(breaks = c(5000,10000,25000,50000,75000,100000)) +
+  facet_wrap(~gender)
+
+ggplot(aes(x = contb_receipt_amt), data = subset(pos_contb, !is.na(gender))) +
+  geom_histogram(binwidth = 0.175) +
+  scale_x_log10(breaks = c(10,25,100,500,2500,10000)) +
+  facet_wrap(~gender)
+```
