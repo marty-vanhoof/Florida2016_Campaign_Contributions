@@ -6,10 +6,10 @@ output:
     #code_folding: hide
     keep_md: true
     toc: yes
-    toc_depth: 2
+    toc_depth: 3
   pdf_document:
     toc: yes
-    toc_depth: 2
+    toc_depth: 3
 ---
 
 This report is an exploratory data analysis of campaign finance data from the Florida 2016 presidential primary elections.  A description of the different columns in the dataset is [here](https://www.dropbox.com/s/2fc15css7bp0jgq/CONTRIBUTOR_FORMAT.txt?dl=0).  I originally completed this analysis about a month before the November 2016 election. If I was doing the analysis retrospectively, then it would probably be different.  
@@ -303,3 +303,36 @@ Now let's use a similar bar graph to examine the top 10 occupations by number of
 ```
 
 It's interesting to note that retired people make by far the most individual contributions (103328), followed by people who are not employed (31766), then attornies (8055), homemakers (4653), physicians (4647), etc.
+
+### 2.1. Some observations
+
+There are 337402 obeservations in the `fl.1` dataset and 14 features: 
+`
+cmte_id, cand_nm, contbr_nm, contbr_city, contbr_zip, contbr_employer, contbr_occupation, contb_receipt_amt, contb_receipt_dt, receipt_desc, memo_text, election_tp, gender, party
+` 
+Not all these features are investigated in the analysis.  I also decided to drop the features
+```
+cand_id, memo_cd, form_tp, file_num, tran_id, contbr_st
+```
+from the original dataset, since I didn't think I would use them. A description of the different columns in the dataset can be found [here](https://www.dropbox.com/s/2fc15css7bp0jgq/CONTRIBUTOR_FORMAT.txt?dl=0).
+
+Most of the features are categorical variables.  The ones that are not categorical variables are the following:
+
+* cmte_id (character)
+* contbr_zip (read in as a numerical variable, but should be categorical)
+* contb_receipt_amt (numerical)
+* contb_receipt_dt (date)
+
+Some other observations:
+
+* The contribution amount with the highest frequency is $25 and 75% of the contributions are $100 or less.
+* Males contribute a bit more than females on average.  The median contribution amount for females is $27 and the median contribution amount for  males is $40.  The mean contribution amount for females is $128.80 and the mean contribution amount for males is $190.40.  Since the data is so positively skewed, the median is probably a better measure of center than the mean in this case.
+* Democrats have more individual contributions than Republicans (209044 for Democrat, 122125 for Republicans), but the total contribution amount for Republicans is greater than for Democrats.  This is consistent with Republicans contributing more per contribution (on average).
+* Hillary Clinton has the most individual contributions (126869), followed by Bernie Sanders, Donald Trump, and Ted Cruz.
+* Retired people contributed by far the most to presidential campaigns in terms of individual contributions.  This is followed by people who are not employed, then attorneys.
+
+In the next section I will investigate the following features in more detail
+```
+cand_nm, contbr_occupation, contb_receipt_amt, contb_receipt_dt, gender, party
+```
+We will see that there is a dependence relationship between gender and party, and that there is also a small negative correlation between contribution date and total contribution amount.
