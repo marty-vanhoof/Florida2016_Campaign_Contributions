@@ -331,14 +331,66 @@ Some other observations:
 * Hillary Clinton has the most individual contributions (126869), followed by Bernie Sanders, Donald Trump, and Ted Cruz.
 * Retired people contributed by far the most to presidential campaigns in terms of individual contributions.  This is followed by people who are not employed, then attorneys.
 
-In the next section I will investigate the following features in more detail
-```
-cand_nm, contbr_occupation, contb_receipt_amt, contb_receipt_dt, gender, party
-```
-We will see that there is a dependence relationship between gender and party, and that there is also a small negative correlation between contribution date and total contribution amount.
-
 I created two new categorical variables in the dataset:  gender and party.  To created the gender variable, I used the `gender()` function in R to predict the gender of a contributor based on their first name.  There were 9605 names where the gender could not be determined, but this only represents about 2.8% of the dataset. I created the party variable based on which candidate the person contributed to.
 
 The contribution amounts data is very right-skewed because the majority of contributions come in smaller amounts and there there are some bigger donors who are more sparse.  In order to have a good look at the distribution, I limited the contribution amounts at the 99th percentile and then applied a squareroot transformation to the y-axis which allows us to see the tail of the distribution better.  We can also get a good look at the smaller contribution amounts by applying a log transformation on the x-axis.
 
 The dataset was already in a tidy format.  Some grouping operations are performed on the dataset in this section and later sections.  I created some new tables where I grouped by candidate name, occupation, and party.  I also grouped by both candidate name/date, and also gender/date.  These are useful operations to perform and makes it easier to work with some plots and see some more statistical summaries of the raw data.
+
+In the next section I will investigate the following features in more detail:
+```
+cand_nm, contbr_occupation, contb_receipt_amt, contb_receipt_dt, gender, party
+```
+We will see that there is a dependence relationship between gender and party, and that there is also a small negative correlation between contribution date and total contribution amount.
+
+# 4. Bivariate Analysis
+
+Let's look at boxplots for male and female contribution amounts. We have to limit the vertical axis a lot in order to see anything, since the data is so highly skewed.
+
+![](florida2016_EDA_files/figure-html/Bivariate_Plots_1-1.png)<!-- -->
+
+```
+## pos_contb$gender: female
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+##     0.21    15.00    27.00   128.78    75.00 10800.00 
+## -------------------------------------------------------- 
+## pos_contb$gender: male
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+##     0.15    20.00    40.00   190.35   100.00 20000.00
+```
+
+As we already observed in the previous section, males contribute a bit more than females on average, and this is relected in the fact that the boxplot for males is shifted positively relative to the boxplot for females.
+
+Let's now look at some boxplots of contribution amounts by party.
+
+![](florida2016_EDA_files/figure-html/Bivariate_Plots_2-1.png)<!-- -->
+
+```
+## pos_contb$party: Democrat
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+##     0.15    10.00    25.00   106.61    50.00 20000.00 
+## -------------------------------------------------------- 
+## pos_contb$party: Green
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     3.0    29.0    50.0   138.9   150.0  2700.0 
+## -------------------------------------------------------- 
+## pos_contb$party: Libertarian
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    3.18   50.00  150.00  321.25  250.00 3000.00 
+## -------------------------------------------------------- 
+## pos_contb$party: Other
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##      50     250     250     341     500    1000 
+## -------------------------------------------------------- 
+## pos_contb$party: Republican
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     0.8    25.0    50.0   256.9   150.0 10800.0
+```
+
+This is interesting. It seems that there are some big differences in the distributions of contribution amounts conditional on party.  The distribution of contribution amounts for "Other" seems quite skewed relative to the distributions of the other parties, but this really has no practical significance since there are only 36 individual contributions in the "Other" category.
+
+
+```
+## [1] 36
+```
+
