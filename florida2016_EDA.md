@@ -343,7 +343,7 @@ cand_nm, contbr_occupation, contb_receipt_amt, contb_receipt_dt, gender, party
 ```
 We will see that there is a dependence relationship between gender and party, and that there is also a small negative correlation between contribution date and total contribution amount.
 
-# 4. Bivariate Analysis
+# 3. Bivariate Analysis
 
 Let's look at boxplots for male and female contribution amounts. We have to limit the vertical axis a lot in order to see anything, since the data is so highly skewed.
 
@@ -394,3 +394,54 @@ This is interesting. It seems that there are some big differences in the distrib
 ## [1] 36
 ```
 
+We can also clearly see that the Democrat party has the smallest contribution amounts on average.  This is also reflected in the bar graphs given below, which show the mean and median contributions amounts by party.
+
+![](florida2016_EDA_files/figure-html/Bivariate_Plots_4-1.png)<!-- -->
+
+```
+## # A tibble: 5 x 3
+##   party       mean_contb_amt median_contb_amt
+##   <fct>                <dbl>            <dbl>
+## 1 Democrat              107.               25
+## 2 Green                 139.               50
+## 3 Libertarian           321.              150
+## 4 Other                 341.              250
+## 5 Republican            257.               50
+```
+
+The next bar graph shows the total contribution amount (sum of all contributions) by party.
+
+![](florida2016_EDA_files/figure-html/Bivariate_Plots_5-1.png)<!-- -->
+
+```
+## # A tibble: 5 x 2
+##   party       total_contb_amt
+##   <fct>                 <dbl>
+## 1 Democrat          22285883.
+## 2 Green                39736.
+## 3 Libertarian         210097.
+## 4 Other                12275 
+## 5 Republican        31371291.
+```
+
+Now we can see that the sum total of all contributions is actually greater for Republicans than Democrats even though the number of individual contributions is greater for Democrats.
+
+Next we'll look at the top 10 candidates according to the total contribution amount.
+
+![](florida2016_EDA_files/figure-html/Bivariate_Plots_6-1.png)<!-- -->
+
+```
+## # A tibble: 10 x 2
+##    cand_nm                   total_contb_amt
+##    <fct>                               <dbl>
+##  1 Clinton, Hillary Rodham         18602454.
+##  2 Rubio, Marco                     8022365.
+##  3 Trump, Donald J.                 7705153.
+##  4 Bush, Jeb                        7032449.
+##  5 Cruz, Rafael Edward 'Ted'        3621333.
+##  6 Sanders, Bernard                 3483259.
+##  7 Carson, Benjamin S.              2036270.
+##  8 Kasich, John R.                   795641.
+##  9 Fiorina, Carly                    451328.
+## 10 Paul, Rand                        424052.
+```

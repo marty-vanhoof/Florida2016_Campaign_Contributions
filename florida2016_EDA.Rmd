@@ -328,7 +328,7 @@ cand_nm, contbr_occupation, contb_receipt_amt, contb_receipt_dt, gender, party
 ```
 We will see that there is a dependence relationship between gender and party, and that there is also a small negative correlation between contribution date and total contribution amount.
 
-# 4. Bivariate Analysis
+# 3. Bivariate Analysis
 
 Let's look at boxplots for male and female contribution amounts. We have to limit the vertical axis a lot in order to see anything, since the data is so highly skewed.
 
@@ -362,3 +362,45 @@ This is interesting. It seems that there are some big differences in the distrib
 nrow(filter(pos_contb, party == 'Other'))
 ```
 
+We can also clearly see that the Democrat party has the smallest contribution amounts on average.  This is also reflected in the bar graphs given below, which show the mean and median contributions amounts by party.
+
+```{r echo=FALSE, warning = FALSE, Bivariate_Plots_4}
+# Plot conditional mean and median by party on separate bar graphs
+p1 <- ggplot(data = contb_by_party, aes(x = party, y = mean_contb_amt)) +
+  geom_bar(stat = "identity")
+
+p2 <- ggplot(data = contb_by_party, aes(x = party, y = median_contb_amt)) +
+  geom_bar(stat = "identity")
+
+grid.arrange(p1, p2)
+
+select(contb_by_party, party, mean_contb_amt, median_contb_amt)
+```
+
+The next bar graph shows the total contribution amount (sum of all contributions) by party.
+
+```{r echo=FALSE, warning = FALSE, Bivariate_Plots_5}
+# Bar graph for total contributions by party
+ggplot(data = contb_by_party, aes(x = party, y = total_contb_amt)) +
+  geom_bar(stat = 'identity')
+
+select(contb_by_party, party, total_contb_amt)
+```
+
+Now we can see that the sum total of all contributions is actually greater for Republicans than Democrats even though the number of individual contributions is greater for Democrats.
+
+Next we'll look at the top 10 candidates according to the total contribution amount.
+
+```{r echo=FALSE, warning = FALSE, message = FALSE, Bivariate_Plots_6}
+# Arrange contb_by_cand in descending order according to total_contb_amt
+contb_by_cand <-contb_by_cand %>% arrange(desc(total_contb_amt))
+
+# Bar graph of top 10 total_contb_amt by candidate
+ggplot(data = contb_by_cand %>% top_n(10), aes(x=reorder(cand_nm, total_contb_amt),
+                                               y = total_contb_amt)) +
+  geom_bar(stat = 'identity') +
+  coord_flip() +
+  xlab('cand_nm')
+
+select(contb_by_cand %>% top_n(10), cand_nm, total_contb_amt)
+```
