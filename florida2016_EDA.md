@@ -482,3 +482,20 @@ I'm curious if there is a dependence relationship between gender and political p
 ```
 
 ![](florida2016_EDA_files/figure-html/Bivariate_Plots_10-1.png)<!-- -->
+
+We can see that females make more contributions than males to the Democrat party, while males make more contributions than females to the Republican party. It's also clear from the table that more males than females contributed to the Green and Libertarian parties as well.  Both the table and bar plot suggest that there may be a dependence relationship between party and gender.  Is this relationship statistically significant? Let's test the following null and alternative hypotheses using a significance level of $\alpha = 0.05$:
+
+$H_0$ : Gender and party are independent.
+
+$H_A$ : Gender and party are dependent.
+
+
+```
+## 
+## 	Pearson's Chi-squared test
+## 
+## data:  table(pos_contb$gender, pos_contb$party)
+## X-squared = 9130.9, df = 4, p-value < 2.2e-16
+```
+
+We find that the $\chi^2$-test statistic is 9130.9 and the corresponding P-value is less than 0.001.  Therefore, reject the null hypothesis.  There is sufficient evidence that the gender and party variables are dependent.  Although the test does not tell us how the results are significant, we can see from the data that females contribute more than males to the Democrat party and less than males to the Green, Libertarian, and Republican parties.
