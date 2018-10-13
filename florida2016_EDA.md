@@ -343,7 +343,7 @@ cand_nm, contbr_occupation, contb_receipt_amt, contb_receipt_dt, gender, party
 ```
 We will see that there is a dependence relationship between gender and party, and that there is also a small negative correlation between contribution date and total contribution amount.
 
-# 3. Bivariate Analysis
+## 3. Bivariate Analysis
 
 Let's look at boxplots for male and female contribution amounts. We have to limit the vertical axis a lot in order to see anything, since the data is so highly skewed.
 
@@ -498,4 +498,27 @@ $H_A$ : Gender and party are dependent.
 ## X-squared = 9130.9, df = 4, p-value < 2.2e-16
 ```
 
-We find that the $\chi^2$-test statistic is 9130.9 and the corresponding P-value is less than 0.001.  Therefore, reject the null hypothesis.  There is sufficient evidence that the gender and party variables are dependent.  Although the test does not tell us how the results are significant, we can see from the data that females contribute more than males to the Democrat party and less than males to the Green, Libertarian, and Republican parties.
+We find that the $\chi^2$-test statistic is 9130.9 and the corresponding p-value is less than $2.2 \times 10^{-16}$.  Therefore, reject the null hypothesis.  There is sufficient evidence that the gender and party variables are dependent.  Although the test does not tell us how the results are significant, we can see from the data that females contribute more than males to the Democrat party and less than males to the Green, Libertarian, and Republican parties.
+
+Let's see if there is a correlation between date and contribution amount by first taking a look at a scatterplot.  We'll use a squareroot transformation on the y-axis in order to see the data points a bit better.
+
+![](florida2016_EDA_files/figure-html/Bivariate_Plots_12-1.png)<!-- -->
+
+The contributions are sparse until around March 2015.  Then there seems to be a downward trend in contribution amounts as the date gets closer to the election. Let's run a correlation test.
+
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  as.numeric(contb_receipt_dt) and contb_receipt_amt
+## t = -132.89, df = 332140, p-value < 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.2279180 -0.2214598
+## sample estimates:
+##        cor 
+## -0.2246914
+```
+
+So the test says that the correlation is statistically significant, but r = -0.22 is not a very strong correlation.

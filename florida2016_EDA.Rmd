@@ -328,7 +328,7 @@ cand_nm, contbr_occupation, contb_receipt_amt, contb_receipt_dt, gender, party
 ```
 We will see that there is a dependence relationship between gender and party, and that there is also a small negative correlation between contribution date and total contribution amount.
 
-# 3. Bivariate Analysis
+## 3. Bivariate Analysis
 
 Let's look at boxplots for male and female contribution amounts. We have to limit the vertical axis a lot in order to see anything, since the data is so highly skewed.
 
@@ -453,4 +453,25 @@ $H_A$ : Gender and party are dependent.
 chisq.test(table(pos_contb$gender, pos_contb$party))
 ```
 
-We find that the $\chi^2$-test statistic is 9130.9 and the corresponding P-value is less than 0.001.  Therefore, reject the null hypothesis.  There is sufficient evidence that the gender and party variables are dependent.  Although the test does not tell us how the results are significant, we can see from the data that females contribute more than males to the Democrat party and less than males to the Green, Libertarian, and Republican parties.
+We find that the $\chi^2$-test statistic is 9130.9 and the corresponding p-value is less than $2.2 \times 10^{-16}$.  Therefore, reject the null hypothesis.  There is sufficient evidence that the gender and party variables are dependent.  Although the test does not tell us how the results are significant, we can see from the data that females contribute more than males to the Democrat party and less than males to the Green, Libertarian, and Republican parties.
+
+Let's see if there is a correlation between date and contribution amount by first taking a look at a scatterplot.  We'll use a squareroot transformation on the y-axis in order to see the data points a bit better.
+
+```{r echo=FALSE, warning = FALSE, message = FALSE, Bivariate_Plots_12}
+# Make a scatterplot and add a trendline.
+ggplot(data = pos_contb, aes(x = contb_receipt_dt, y = contb_receipt_amt)) +
+  geom_jitter(alpha = 1/15) +
+  coord_trans(y = 'sqrt') +
+  scale_y_continuous(breaks = c(500, 1000, 2500, 5000, 10000, 15000),
+                     limits = c(0, 15000)) +
+  geom_smooth(method = 'lm')
+```
+
+The contributions are sparse until around March 2015.  Then there seems to be a downward trend in contribution amounts as the date gets closer to the election. Let's run a correlation test.
+
+```{r echo=FALSE, warning = FALSE, message = FALSE, Bivariate_Plots_13}
+with(pos_contb, cor.test(as.numeric(contb_receipt_dt), contb_receipt_amt,
+                         method = 'pearson'))
+```
+
+So the test says that the correlation is statistically significant, but r = -0.22 is not a very strong correlation.
