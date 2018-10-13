@@ -377,7 +377,7 @@ grid.arrange(p1, p2)
 select(contb_by_party, party, mean_contb_amt, median_contb_amt)
 ```
 
-The next bar graph shows the total contribution amount (sum of all contributions) by party.
+The next bar graph displays the total contribution amount (sum of all contributions) by party.  It shows that the sum total of all contributions is actually greater for Republicans than Democrats even though the number of individual contributions is greater for Democrats.
 
 ```{r echo=FALSE, warning = FALSE, Bivariate_Plots_5}
 # Bar graph for total contributions by party
@@ -386,8 +386,6 @@ ggplot(data = contb_by_party, aes(x = party, y = total_contb_amt)) +
 
 select(contb_by_party, party, total_contb_amt)
 ```
-
-Now we can see that the sum total of all contributions is actually greater for Republicans than Democrats even though the number of individual contributions is greater for Democrats.
 
 Next we'll look at the top 10 candidates according to the total contribution amount.
 
@@ -403,4 +401,44 @@ ggplot(data = contb_by_cand %>% top_n(10), aes(x=reorder(cand_nm, total_contb_am
   xlab('cand_nm')
 
 select(contb_by_cand %>% top_n(10), cand_nm, total_contb_amt)
+```
+
+Hillary Clinton also leads in total contributions (~18.6 million), followed by Marco Rubio (~8.02 million), Donald Trump (~7.7 million), Jeb Bush (~7.03 million), etc.  
+
+Boxplots are also interesting to look at here.
+
+```{r echo=FALSE, warning = FALSE, message = FALSE, Bivariate_Plots_7}
+# Keep only the rows of pos_contb with the top 10 candidates above
+contb_by_cand <- arrange(contb_by_cand, desc(total_contb_amt))
+total_contb_top10 <- subset(pos_contb, cand_nm %in%
+                              head(contb_by_cand, 10)$cand_nm)
+
+# Boxplot for contribution amounts of top 10 candidates according to total_contb
+ggplot(data = total_contb_top10, aes(x = cand_nm, y = contb_receipt_amt)) +
+  geom_boxplot(outlier.colour = NA) +
+  coord_flip() +
+  ylim(0, 1000)
+```
+
+It appears that the distribution of contribution amounts for Jeb Bush is the most right-skewed.  This suggests that he received many of his contributions from "big donors" (and he still lost badly in the primary).  We can also see the stark contrast with Bernie Sanders' distribution of contribution amounts; Bernie's distribution seems to be the least right-skewed, which suggests that most of his contributions came in smaller amounts.  Just to get some perspective, let's look at the following table of the top 10 total contribution amounts.
+
+```{r echo=FALSE, warning = FALSE, message = FALSE, Bivariate_Plots_8}
+head(contb_by_cand, 10)
+```
+
+We can see that Jeb Bush's mean contribution amount is $1228.38, but he only received 5725 individual contributions. Bernie Sanders' mean contribution amount is $42.50, and he received 81954 individual contributions.  This is a big contrast.
+
+I'm curious if there is a dependence relationship between gender and political party.  Let's first make a contigency table for these two categorical variables, and also look at a bar plot.  In the bar plot we will keep only Republicans and Democrats since the other parties have so many fewer contributions in comparison.
+
+```{r echo=FALSE, warning = FALSE, message = FALSE, Bivariate_Plots_9}
+table(pos_contb$gender, pos_contb$party)
+```
+
+```{r echo=FALSE, warning = FALSE, message = FALSE, Bivariate_Plots_10}
+# Bar plot for counts of political party by gender
+pos_contb_rep_dem = subset(pos_contb, party %in% c('Democrat', 'Republican'))
+ggplot(data = subset(pos_contb_rep_dem, !is.na(gender)),
+       aes(x = party, y = ..count..)) +
+  geom_bar(aes(fill = gender), position = 'dodge') +
+  scale_y_continuous(breaks = seq(0, 120000, 20000), limits = c(0, 120000))
 ```

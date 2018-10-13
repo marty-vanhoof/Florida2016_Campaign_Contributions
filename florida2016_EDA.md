@@ -409,7 +409,7 @@ We can also clearly see that the Democrat party has the smallest contribution am
 ## 5 Republican            257.               50
 ```
 
-The next bar graph shows the total contribution amount (sum of all contributions) by party.
+The next bar graph displays the total contribution amount (sum of all contributions) by party.  It shows that the sum total of all contributions is actually greater for Republicans than Democrats even though the number of individual contributions is greater for Democrats.
 
 ![](florida2016_EDA_files/figure-html/Bivariate_Plots_5-1.png)<!-- -->
 
@@ -423,8 +423,6 @@ The next bar graph shows the total contribution amount (sum of all contributions
 ## 4 Other                12275 
 ## 5 Republican        31371291.
 ```
-
-Now we can see that the sum total of all contributions is actually greater for Republicans than Democrats even though the number of individual contributions is greater for Democrats.
 
 Next we'll look at the top 10 candidates according to the total contribution amount.
 
@@ -445,3 +443,42 @@ Next we'll look at the top 10 candidates according to the total contribution amo
 ##  9 Fiorina, Carly                    451328.
 ## 10 Paul, Rand                        424052.
 ```
+
+Hillary Clinton also leads in total contributions (~18.6 million), followed by Marco Rubio (~8.02 million), Donald Trump (~7.7 million), Jeb Bush (~7.03 million), etc.  
+
+Boxplots are also interesting to look at here.
+
+![](florida2016_EDA_files/figure-html/Bivariate_Plots_7-1.png)<!-- -->
+
+It appears that the distribution of contribution amounts for Jeb Bush is the most right-skewed.  This suggests that he received many of his contributions from "big donors" (and he still lost badly in the primary).  We can also see the stark contrast with Bernie Sanders' distribution of contribution amounts; Bernie's distribution seems to be the least right-skewed, which suggests that most of his contributions came in smaller amounts.  Just to get some perspective, let's look at the following table of the top 10 total contribution amounts.
+
+
+```
+## # A tibble: 10 x 4
+##    cand_nm                   mean_contb_amt total_contb_amt num_contb
+##    <fct>                              <dbl>           <dbl>     <int>
+##  1 Clinton, Hillary Rodham            147.        18602454.    126869
+##  2 Rubio, Marco                       423.         8022365.     18957
+##  3 Trump, Donald J.                   165.         7705153.     46669
+##  4 Bush, Jeb                         1228.         7032449.      5725
+##  5 Cruz, Rafael Edward 'Ted'          128.         3621333.     28242
+##  6 Sanders, Bernard                    42.5        3483259.     81954
+##  7 Carson, Benjamin S.                129.         2036270.     15824
+##  8 Kasich, John R.                    600.          795641.      1326
+##  9 Fiorina, Carly                     221.          451328.      2038
+## 10 Paul, Rand                         211.          424052.      2011
+```
+
+We can see that Jeb Bush's mean contribution amount is $1228.38, but he only received 5725 individual contributions. Bernie Sanders' mean contribution amount is $42.50, and he received 81954 individual contributions.  This is a big contrast.
+
+I'm curious if there is a dependence relationship between gender and political party.  Let's first make a contigency table for these two categorical variables, and also look at a bar plot.  In the bar plot we will keep only Republicans and Democrats since the other parties have so many fewer contributions in comparison.
+
+
+```
+##         
+##          Democrat  Green Libertarian  Other Republican
+##   female   111105     89          98     18      44639
+##   male      91943    196         547     18      74140
+```
+
+![](florida2016_EDA_files/figure-html/Bivariate_Plots_10-1.png)<!-- -->
