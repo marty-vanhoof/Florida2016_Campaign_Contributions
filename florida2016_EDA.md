@@ -522,3 +522,13 @@ The contributions are sparse until around March 2015.  Then there seems to be a 
 ```
 
 So the test says that the correlation is statistically significant, but r = -0.22 is not a very strong correlation.
+
+### 3.1. Discussion
+
+There is a dependence relationship between party and gender and this relationship is statistically significant.  In terms of individual contributions, females contribute more to the Democrat party than to the Republican, Libertarian, Green party and vice-versa.  We also found a small negative correlation between contribution date and contribution amount; it seems that there is a downward trend in contribution amounts as the election got closer.
+
+Males contribute a bit more than females on average, and Democrats seem to contribute more in smaller amounts, since their distribution of contribution amounts is the least right-skewed according to the boxplots.  The "Other" party category has the highest mean and median contributions amounts, but this has little practical significance since there are only 36 individual contributions in this category.  We also found that Jeb Bush seemed to have bigger donors on average since his distribution of contribution amounts was the most right-skewed according to the boxplots.  Bernie Sanders was somehow opposite, since his boxplot was the least right-skewed.
+
+I believe that the strongest relationship I found is the dependence relationship between gender and party, although there are probably others that I did not investigate.
+
+## 4. Multivariate Analysis
