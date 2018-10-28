@@ -12,6 +12,8 @@ output:
     toc_depth: 3
 ---
 
+## Abstract
+
 This report is an exploratory data analysis of campaign finance data from the Florida 2016 presidential primary elections.  A description of the different columns in the dataset is [here](https://www.dropbox.com/s/2fc15css7bp0jgq/CONTRIBUTOR_FORMAT.txt?dl=0).  I originally completed this analysis about a month before the November 2016 election. If I was doing the analysis retrospectively, then it would probably be different.  
 
 
@@ -532,3 +534,5 @@ Males contribute a bit more than females on average, and Democrats seem to contr
 I believe that the strongest relationship I found is the dependence relationship between gender and party, although there are probably others that I did not investigate.
 
 ## 4. Multivariate Analysis
+
+k...
